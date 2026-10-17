@@ -6,18 +6,16 @@
 const CONFIG_STORAGE_KEY = 'gitpulse_cloud_config';
 
 const Config = {
-  // Option 1: Hardcode your Firebase project credentials here if you like,
-  // OR paste them in the in-app Settings modal!
-  const firebaseConfig = {
-  apiKey: "AIzaSyCbxkfUomKQ0H9mi8OWapYXezOFpbYQeq4",
-  authDomain: "chatchat-5433d.firebaseapp.com",
-  databaseURL: "https://chatchat-5433d-default-rtdb.firebaseio.com",
-  projectId: "chatchat-5433d",
-  storageBucket: "chatchat-5433d.firebasestorage.app",
-  messagingSenderId: "660366983221",
-  appId: "1:660366983221:web:dfddf88c250258742f717c"
-};
-  */
+  // Firebase credentials
+  defaultFirebaseConfig: {
+    apiKey: "AIzaSyCbxkfUomKQ0H9mi8OWapYXezOFpbYQeq4",
+    authDomain: "chatchat-5433d.firebaseapp.com",
+    databaseURL: "https://chatchat-5433d-default-rtdb.firebaseio.com",
+    projectId: "chatchat-5433d",
+    storageBucket: "chatchat-5433d.firebasestorage.app",
+    messagingSenderId: "660366983221",
+    appId: "1:660366983221:web:dfddf88c250258742f717c"
+  },
 
   firebaseApp: null,
   firebaseDb: null,
