@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#050a18">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Chat-ChaT | Modern Real-Time Chat</title>
+  
+  <!-- App Logo Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- ==================== APP CONTAINER ==================== -->
+  <div id="app" class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <!-- App Header / Logo -->
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="assets/logo.png" alt="Chat-ChaT Logo" class="app-logo-img">
+          <span class="logo-text">Chat-ChaT</span>
+        </div>
+        <button id="btnCloseSidebar" class="icon-btn mobile-only btn-close-sidebar" title="Close Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- FRIEND / USERNAME SEARCH -->
+      <div class="friend-search-container">
+        <div class="friend-search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="friendSearchInput" placeholder="Find friend / username...">
+          <button id="btnClearFriendSearch" class="clear-search-btn hidden" title="Clear">&times;</button>
+        </div>
+        <!-- Live search results popup -->
+        <div id="friendSearchResults" class="friend-search-results hidden"></div>
+      </div>
+
+      <!-- Navigation Content -->
+      <div class="sidebar-scrollable">
+        <!-- CHANNELS SECTION -->
+        <div class="section-group">
+          <div class="section-header">
+            <span class="section-title">CHANNELS</span>
+            <button id="btnOpenCreateRoom" class="icon-btn-sm" title="Create Channel">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
+          <div id="channelsList" class="nav-list">
+            <!-- Dynamic Channels injected by JS -->
+          </div>
+        </div>
+
+        <!-- DIRECT MESSAGES SECTION -->
+        <div class="section-group">
+          <div class="section-header">
+            <span class="section-title">DIRECT MESSAGES</span>
+            <button id="btnOpenNewDM" class="icon-btn-sm" title="Start Direct Message">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
+          <div id="dmList" class="nav-list">
+            <!-- Dynamic DMs injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- USER PROFILE FOOTER -->
+      <div class="sidebar-footer">
+        <div class="user-card" id="currentUserCard">
+          <div class="avatar-wrapper">
+            <div id="userAvatarImg" class="avatar-img">👦</div>
+            <span class="status-indicator online"></span>
+          </div>
+          <div class="user-details">
+            <div id="userDisplayName" class="user-name">You</div>
+            <div id="userHandle" class="user-handle">@viswajeet</div>
+          </div>
+        </div>
+        <div class="user-controls">
+          <button id="btnOpenSettings" class="icon-btn" title="Settings & Themes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </button>
+          <button id="btnLogout" class="icon-btn" title="Log Out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- MAIN CHAT PANEL -->
+    <main class="chat-main">
+      <!-- TOP NAV BAR -->
+      <header class="chat-header">
+        <div class="chat-header-left">
+          <button id="btnToggleSidebar" class="icon-btn mobile-only" title="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="room-avatar-wrapper" id="headerAvatarWrapper">
+            <div class="room-avatar-img" id="currentRoomAvatar">🤖</div>
+            <span class="status-indicator online"></span>
+          </div>
+          <div class="room-info">
+            <div class="room-title-wrapper">
+              <h2 id="currentRoomTitle" class="room-title">@bot2</h2>
+              <span class="header-status-dot online"></span>
+              <span id="roomPrivacyBadge" class="privacy-badge hidden">Public</span>
+            </div>
+            <p id="currentRoomDesc" class="room-desc">Direct Message conversation with bot2</p>
+          </div>
+        </div>
+
+        <div class="chat-header-right">
+          <!-- Search in room -->
+          <div class="search-box">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" placeholder="Search messages...">
+          </div>
+
+          <!-- Header Action Buttons (Call, Video, Menu) -->
+          <button id="btnAudioCall" class="header-circle-btn" title="Voice Call (Not Available)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          </button>
+          
+          <button id="btnVideoCall" class="header-circle-btn" title="Video Call (Not Available)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          </button>
+
+          <button id="btnClearChat" class="header-circle-btn" title="More Options / Clear Chat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- MESSAGES DISPLAY AREA (Cyber Cosmic Theme with Floating 3D Decoration) -->
+      <section id="messagesContainer" class="messages-container theme-cyber-blue">
+        <div class="chat-watermark-overlay"></div>
+        
+        <!-- Welcome Banner -->
+        <div class="channel-welcome-banner hidden" id="channelWelcomeBanner">
+          <div class="welcome-icon">
+            <img src="assets/logo.png" alt="Chat-ChaT" class="welcome-logo-img">
+          </div>
+          <h3 id="welcomeBannerTitle">Welcome to Chat-ChaT!</h3>
+          <p id="welcomeBannerSub">Send a message to start the conversation.</p>
+        </div>
+
+        <!-- Dynamic Messages List -->
+        <div id="messagesList" class="messages-list"></div>
+      </section>
+
+      <!-- TYPING INDICATOR -->
+      <div id="typingIndicator" class="typing-indicator hidden">
+        <div class="message-avatar-wrap">
+          <div class="message-avatar">🤖</div>
+          <span class="status-indicator online"></span>
+        </div>
+        <div class="typing-bubble">
+          <span class="typing-dots">
+            <span></span><span></span><span></span>
+          </span>
+          <span id="typingText" class="typing-text">bot2 is typing...</span>
+        </div>
+      </div>
+
+      <!-- ATTACHMENT PREVIEW BAR -->
+      <div id="attachmentPreviewBar" class="attachment-preview-bar hidden">
+        <div class="preview-card">
+          <img id="previewImage" src="" alt="Attachment Preview">
+          <button id="btnRemoveAttachment" class="preview-remove-btn" title="Remove attachment">&times;</button>
+        </div>
+        <span id="previewFilename" class="preview-filename">image.png</span>
+      </div>
+
+      <!-- FLOATING CHAT INPUT BAR (Matches Reference Image) -->
+      <footer class="chat-input-area">
+        <div class="input-box-wrapper">
+          <!-- File upload trigger -->
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          <button id="btnAttachFile" class="icon-btn-input" title="Attach Image">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+          </button>
+
+          <!-- Emoji Picker trigger -->
+          <div class="emoji-picker-container">
+            <button id="btnEmojiToggle" class="icon-btn-input" title="Add Emoji">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            </button>
+            <!-- Quick Emoji Popup -->
+            <div id="emojiPopup" class="emoji-popup hidden">
+              <div class="emoji-grid">
+                <span class="emoji-item">😊</span>
+                <span class="emoji-item">🥰</span>
+                <span class="emoji-item">🙌</span>
+                <span class="emoji-item">👍</span>
+                <span class="emoji-item">🔥</span>
+                <span class="emoji-item">🚀</span>
+                <span class="emoji-item">❤️</span>
+                <span class="emoji-item">😂</span>
+                <span class="emoji-item">✨</span>
+                <span class="emoji-item">💡</span>
+                <span class="emoji-item">👏</span>
+                <span class="emoji-item">👀</span>
+                <span class="emoji-item">💯</span>
+                <span class="emoji-item">😎</span>
+                <span class="emoji-item">🤖</span>
+                <span class="emoji-item">💻</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Input Textarea -->
+          <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
+
+          <!-- Send Button (Blue Glowing Circle with Paper Airplane) -->
+          <button id="btnSendMessage" class="btn-send-pill" title="Send Message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+          </button>
+        </div>
+      </footer>
+    </main>
+
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- AUTHENTICATION MODAL (USERNAME & PASSWORD) -->
+  <div id="authModal" class="modal-backdrop">
+    <div class="modal-card auth-card">
+      <div class="modal-header">
+        <div class="auth-brand">
+          <img src="assets/logo.png" alt="Chat-ChaT" class="auth-logo-img">
+          <h2>Welcome to Chat-ChaT</h2>
+          <p>Login with your Username & Password, or create a new ID</p>
+        </div>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="tab-buttons">
+        <button id="tabBtnLogin" class="tab-btn active">Log In</button>
+        <button id="tabBtnRegister" class="tab-btn">Create ID (Sign Up)</button>
+      </div>
+
+      <!-- Error / Notice Banner -->
+      <div id="authNotice" class="auth-notice hidden"></div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="loginUsername">Username / ID</label>
+          <div class="input-with-icon">
+            <span class="input-prefix">@</span>
+            <input type="text" id="loginUsername" placeholder="your_id (e.g. viswajeet)" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="form-check">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Remember me on this browser</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary full-width" id="btnSubmitLogin">
+          <span>Log In</span>
+        </button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="auth-form hidden">
+        <div class="form-group">
+          <label for="regUsername">Choose Username / ID (Letters & numbers only)</label>
+          <div class="input-with-icon">
+            <span class="input-prefix">@</span>
+            <input type="text" id="regUsername" placeholder="e.g. viswajeet" required pattern="^[a-zA-Z0-9_-]{3,20}$" title="3-20 characters: letters, numbers, _ or -" autocomplete="username">
+          </div>
+          <small class="helper-text">This will be your unique chat ID.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="regDisplayName">Display Name</label>
+          <input type="text" id="regDisplayName" placeholder="e.g. You" required>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" placeholder="Minimum 4 characters" minlength="4" required autocomplete="new-password">
+        </div>
+
+        <!-- Custom DP (Display Picture) Selection -->
+        <div class="form-group">
+          <label>Choose Your DP (Display Picture)</label>
+          <div class="custom-dp-card">
+            <div class="custom-dp-avatar-preview sm" id="regDpPreviewWrap">
+              <span class="custom-dp-preview-char" id="regDpPreview">👦</span>
+              <span class="status-indicator online"></span>
+            </div>
+            <div class="custom-dp-input-block">
+              <div class="input-with-icon">
+                <span class="input-prefix">DP:</span>
+                <input type="text" id="regCustomDpInput" name="regAvatar" placeholder="Pick below or paste emoji" maxlength="6" value="👦" required>
+              </div>
+              <small class="helper-text">Select any emoji below or type/paste your own!</small>
+            </div>
+          </div>
+
+          <div class="emoji-picker-toolbar">
+            <div class="emoji-search-bar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="regEmojiSearch" placeholder="Search emojis...">
+              <button type="button" id="btnClearRegEmojiSearch" class="clear-search-btn hidden">&times;</button>
+            </div>
+            <div class="emoji-category-pills" id="regEmojiCategoryPills">
+              <button type="button" class="emoji-cat-pill active" data-cat="all">All</button>
+              <button type="button" class="emoji-cat-pill" data-cat="smileys">Smileys</button>
+              <button type="button" class="emoji-cat-pill" data-cat="people">People</button>
+              <button type="button" class="emoji-cat-pill" data-cat="animals">Animals</button>
+              <button type="button" class="emoji-cat-pill" data-cat="gaming">Cool</button>
+            </div>
+          </div>
+
+          <div class="custom-dp-emoji-grid compact" id="regAllEmojisGrid"></div>
+        </div>
+
+        <button type="submit" class="btn-primary full-width" id="btnSubmitRegister">
+          <span>Create My ID & Enter Chat</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE ROOM MODAL -->
+  <div id="createRoomModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Create New Channel / Room</h3>
+        <button class="modal-close" id="btnCloseCreateRoom">&times;</button>
+      </div>
+      <form id="createRoomForm">
+        <div class="form-group">
+          <label for="newRoomName">Channel Name</label>
+          <div class="input-with-icon">
+            <span class="input-prefix">#</span>
+            <input type="text" id="newRoomName" placeholder="my-awesome-room" required pattern="^[a-zA-Z0-9-_]{2,30}$">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newRoomDesc">Topic / Description (Optional)</label>
+          <input type="text" id="newRoomDesc" placeholder="What's this room about?">
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="chkRoomPrivate">
+            <span>Make this room <strong>Private</strong> (Password Protected) 🔒</span>
+          </label>
+        </div>
+
+        <div class="form-group hidden" id="roomPasswordGroup">
+          <label for="newRoomPassword">Room Access Password</label>
+          <input type="password" id="newRoomPassword" placeholder="Set a password for joining this room">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="btnCancelCreateRoom">Cancel</button>
+          <button type="submit" class="btn-primary">Create Channel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- UNLOCK PRIVATE ROOM MODAL -->
+  <div id="unlockRoomModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🔒 Protected Channel</h3>
+        <button class="modal-close" id="btnCloseUnlockRoom">&times;</button>
+      </div>
+      <form id="unlockRoomForm">
+        <p class="modal-notice">This channel is password-protected. Please enter the channel password to unlock and chat.</p>
+        <div class="form-group">
+          <label for="unlockPassword">Channel Password</label>
+          <input type="password" id="unlockPassword" placeholder="Enter room password" required>
+        </div>
+        <div id="unlockError" class="auth-notice hidden"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="btnCancelUnlockRoom">Cancel</button>
+          <button type="submit" class="btn-primary">Unlock & Join</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- START DIRECT MESSAGE MODAL -->
+  <div id="newDmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Start Direct Message</h3>
+        <button class="modal-close" id="btnCloseNewDm">&times;</button>
+      </div>
+      <form id="newDmForm">
+        <div class="form-group">
+          <label for="dmTargetUsername">Recipient's Username / ID</label>
+          <div class="input-with-icon">
+            <span class="input-prefix">@</span>
+            <input type="text" id="dmTargetUsername" placeholder="e.g. bot2" required>
+          </div>
+        </div>
+
+        <!-- Quick User List Suggestions -->
+        <div class="quick-users-section">
+          <label class="section-sublabel">Select a User to Chat:</label>
+          <div id="quickUsersList" class="quick-users-list"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="btnCancelNewDm">Cancel</button>
+          <button type="submit" class="btn-primary">Start Chat</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SETTINGS & THEMES MODAL -->
+  <div id="settingsModal" class="modal-backdrop hidden">
+    <div class="modal-card settings-card">
+      <div class="modal-header">
+        <h3>⚙️ Settings & Custom Themes</h3>
+        <button class="modal-close" id="btnCloseSettings">&times;</button>
+      </div>
+      <div class="modal-body settings-body">
+        
+        <!-- THEME MODE (DARK / LIGHT) -->
+        <div class="settings-section">
+          <label class="settings-label">App Appearance</label>
+          <div class="theme-mode-toggle">
+            <button type="button" id="btnThemeDark" class="theme-mode-btn active" data-mode="dark">
+              <span class="theme-icon">🌙</span> Dark Theme (Cyber Blue)
+            </button>
+            <button type="button" id="btnThemeLight" class="theme-mode-btn" data-mode="light">
+              <span class="theme-icon">☀️</span> Light Theme
+            </button>
+          </div>
+        </div>
+
+        <!-- CHAT WALLPAPERS (WHATSAPP STYLE) -->
+        <div class="settings-section">
+          <label class="settings-label">Chat Background Wallpaper (WhatsApp Style)</label>
+          <div class="wallpaper-picker" id="wallpaperPicker">
+            <div class="wallpaper-chip selected" data-wallpaper="wallpaper-cyber">
+              <span class="chip-preview cyber-preview"></span>
+              <span class="chip-name">Cyber Blue (Default)</span>
+            </div>
+            <div class="wallpaper-chip" data-wallpaper="wallpaper-doodle-dark">
+              <span class="chip-preview doodle-dark-preview"></span>
+              <span class="chip-name">WhatsApp Dark Doodle</span>
+            </div>
+            <div class="wallpaper-chip" data-wallpaper="wallpaper-doodle-light">
+              <span class="chip-preview doodle-light-preview"></span>
+              <span class="chip-name">WhatsApp Light Doodle</span>
+            </div>
+            <div class="wallpaper-chip" data-wallpaper="wallpaper-emerald">
+              <span class="chip-preview emerald-preview"></span>
+              <span class="chip-name">WhatsApp Emerald</span>
+            </div>
+            <div class="wallpaper-chip" data-wallpaper="wallpaper-midnight">
+              <span class="chip-preview midnight-preview"></span>
+              <span class="chip-name">Midnight Black</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE SETTINGS & CUSTOM DP -->
+        <form id="editProfileForm" class="settings-section">
+          <label class="settings-label">Edit Profile & Custom DP</label>
+          <div class="form-group">
+            <label for="editDisplayName">Display Name</label>
+            <input type="text" id="editDisplayName" required>
+          </div>
+          <div class="form-group">
+            <label>Custom DP (Choose Any Emoji)</label>
+            
+            <!-- Live Large DP Preview & Direct Input -->
+            <div class="custom-dp-card">
+              <div class="custom-dp-avatar-preview" id="editDpPreviewWrap">
+                <span class="custom-dp-preview-char" id="editDpPreview">👦</span>
+                <span class="status-indicator online"></span>
+              </div>
+              <div class="custom-dp-input-block">
+                <div class="input-with-icon">
+                  <span class="input-prefix">DP:</span>
+                  <input type="text" id="editCustomDpInput" placeholder="Type or paste any emoji (e.g. 🦁, 👑, 🔥)" maxlength="6" value="👦">
+                </div>
+                <small class="helper-text">Pick any emoji below or type/paste your own emoji!</small>
+              </div>
+            </div>
+
+            <!-- Emoji Search & Category Filter -->
+            <div class="emoji-picker-toolbar">
+              <div class="emoji-search-bar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="editEmojiSearch" placeholder="Search all emojis (e.g. cat, cool, fire, boy)...">
+                <button type="button" id="btnClearEditEmojiSearch" class="clear-search-btn hidden">&times;</button>
+              </div>
+              <div class="emoji-category-pills" id="editEmojiCategoryPills">
+                <button type="button" class="emoji-cat-pill active" data-cat="all">All</button>
+                <button type="button" class="emoji-cat-pill" data-cat="smileys">Smileys</button>
+                <button type="button" class="emoji-cat-pill" data-cat="people">People</button>
+                <button type="button" class="emoji-cat-pill" data-cat="animals">Animals</button>
+                <button type="button" class="emoji-cat-pill" data-cat="gaming">Gaming & Cool</button>
+                <button type="button" class="emoji-cat-pill" data-cat="symbols">Symbols</button>
+              </div>
+            </div>
+
+            <!-- Scrollable Emoji Grid with All Emojis -->
+            <div class="custom-dp-emoji-grid" id="editAllEmojisGrid"></div>
+          </div>
+          <button type="submit" class="btn-primary full-width">Save Profile Changes</button>
+        </form>
+
+        <!-- DANGER ZONE: DELETE ID / ACCOUNT -->
+        <div class="danger-zone-section">
+          <div class="danger-zone-header">
+            <strong>Delete My ID / Account</strong>
+            <p>Permanently remove your unique username and login from this browser.</p>
+          </div>
+          <button type="button" id="btnDeleteAccount" class="btn-danger full-width">
+            <span>🗑️ Delete My ID Permanently</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX FOR IMAGE ATTACHMENTS -->
+  <div id="imageLightbox" class="lightbox-backdrop hidden">
+    <button class="lightbox-close" id="btnCloseLightbox">&times;</button>
+    <img id="lightboxImage" src="" alt="Zoomed Attachment">
+  <!-- TOAST NOTIFICATION POPUP -->
+  <div id="toastNotification" class="toast-notification hidden">
+    <span id="toastIcon" class="toast-icon">⚠️</span>
+    <span id="toastMessage" class="toast-message">Option not available</span>
+  </div>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
