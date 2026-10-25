@@ -1,0 +1,312 @@
+{
+  "game_title": "TEMPLE ESCAPE: LOST IDOL",
+  "version": "1.0.0",
+  "created_at": "2026-10-24",
+  "description": "Complete original 3D endless runner asset manifest",
+  "assets_count": 21,
+  "icons": [
+    {
+      "name": "icon-play",
+      "filename": "assets/icons/icon-play.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for play"
+    },
+    {
+      "name": "icon-pause",
+      "filename": "assets/icons/icon-pause.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for pause"
+    },
+    {
+      "name": "icon-resume",
+      "filename": "assets/icons/icon-resume.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for resume"
+    },
+    {
+      "name": "icon-restart",
+      "filename": "assets/icons/icon-restart.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for restart"
+    },
+    {
+      "name": "icon-home",
+      "filename": "assets/icons/icon-home.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for home"
+    },
+    {
+      "name": "icon-settings",
+      "filename": "assets/icons/icon-settings.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for settings"
+    },
+    {
+      "name": "icon-sound",
+      "filename": "assets/icons/icon-sound.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for sound"
+    },
+    {
+      "name": "icon-music",
+      "filename": "assets/icons/icon-music.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for music"
+    },
+    {
+      "name": "icon-shop",
+      "filename": "assets/icons/icon-shop.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for shop"
+    },
+    {
+      "name": "icon-coin",
+      "filename": "assets/icons/icon-coin.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for coin"
+    },
+    {
+      "name": "icon-distance",
+      "filename": "assets/icons/icon-distance.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for distance"
+    },
+    {
+      "name": "icon-score",
+      "filename": "assets/icons/icon-score.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for score"
+    },
+    {
+      "name": "icon-magnet",
+      "filename": "assets/icons/icon-magnet.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for magnet"
+    },
+    {
+      "name": "icon-shield",
+      "filename": "assets/icons/icon-shield.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for shield"
+    },
+    {
+      "name": "icon-boost",
+      "filename": "assets/icons/icon-boost.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for boost"
+    },
+    {
+      "name": "icon-multiplier",
+      "filename": "assets/icons/icon-multiplier.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for multiplier"
+    },
+    {
+      "name": "icon-revive",
+      "filename": "assets/icons/icon-revive.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for revive"
+    },
+    {
+      "name": "icon-close",
+      "filename": "assets/icons/icon-close.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for close"
+    },
+    {
+      "name": "icon-back",
+      "filename": "assets/icons/icon-back.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for back"
+    },
+    {
+      "name": "icon-achievement",
+      "filename": "assets/icons/icon-achievement.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for achievement"
+    },
+    {
+      "name": "icon-golden-idol",
+      "filename": "assets/icons/icon-golden-idol.svg",
+      "format": "svg",
+      "dimensions": "100x100",
+      "transparent": true,
+      "category": "ui-icon",
+      "intended_use": "UI control or indicator for golden-idol"
+    }
+  ],
+  "models_3d": [
+    {
+      "name": "explorer",
+      "type": "procedural_hierarchical_mesh",
+      "description": "Adventurer runner character with animated joints"
+    },
+    {
+      "name": "pursuer_guardian",
+      "type": "procedural_hierarchical_mesh",
+      "description": "Demon ape temple guardian beast"
+    },
+    {
+      "name": "coin",
+      "type": "procedural_mesh",
+      "description": "Spinning metallic 3D golden coin"
+    },
+    {
+      "name": "path_straight",
+      "type": "modular_segment",
+      "description": "Ancient carved stone path with moss and borders"
+    },
+    {
+      "name": "path_turn_left",
+      "type": "modular_segment",
+      "description": "90 degree left turn junction"
+    },
+    {
+      "name": "path_turn_right",
+      "type": "modular_segment",
+      "description": "90 degree right turn junction"
+    },
+    {
+      "name": "narrow_bridge",
+      "type": "modular_segment",
+      "description": "Wood plank bridge over jungle canyon"
+    },
+    {
+      "name": "broken_bridge",
+      "type": "modular_segment",
+      "description": "Jump gap chasm over mist"
+    },
+    {
+      "name": "stone_arch",
+      "type": "obstacle_mesh",
+      "description": "Low stone arch requiring slide action"
+    },
+    {
+      "name": "fallen_log",
+      "type": "obstacle_mesh",
+      "description": "Fallen mossy tree trunk requiring jump"
+    },
+    {
+      "name": "side_rock",
+      "type": "obstacle_mesh",
+      "description": "Stone boulder blocking specific lane"
+    },
+    {
+      "name": "spikes",
+      "type": "obstacle_mesh",
+      "description": "Ancient floor spikes trap"
+    },
+    {
+      "name": "temple_pillar",
+      "type": "prop_mesh",
+      "description": "Ancient carved stone ruin pillar"
+    },
+    {
+      "name": "jungle_tree",
+      "type": "prop_mesh",
+      "description": "Lush tropical tree with canopy and vines"
+    }
+  ],
+  "audio": [
+    {
+      "name": "footstep",
+      "type": "web_audio_synth",
+      "description": "Stone impact step"
+    },
+    {
+      "name": "coin_pickup",
+      "type": "web_audio_synth",
+      "description": "Golden chime pentatonic tone"
+    },
+    {
+      "name": "jump",
+      "type": "web_audio_synth",
+      "description": "Wind leap whoosh"
+    },
+    {
+      "name": "slide",
+      "type": "web_audio_synth",
+      "description": "Stone friction slide"
+    },
+    {
+      "name": "powerup",
+      "type": "web_audio_synth",
+      "description": "Harmonic ascending fanfare"
+    },
+    {
+      "name": "roar",
+      "type": "web_audio_synth",
+      "description": "Deep resonant monster guardian roar"
+    },
+    {
+      "name": "crash",
+      "type": "web_audio_synth",
+      "description": "Impact thud with rumble"
+    },
+    {
+      "name": "jungle_drums",
+      "type": "web_audio_synth",
+      "description": "Dynamic procedural tribal chase rhythm"
+    }
+  ]
+}

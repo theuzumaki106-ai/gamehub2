@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="gold-sc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/><stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="44" fill="#2B1807" stroke="url(#gold-sc)" stroke-width="5"/>
+  <!-- Trophy cup -->
+  <path d="M35 30 L65 30 L60 52 Q 50 62 40 52 Z" fill="url(#gold-sc)"/>
+  <path d="M47 60 L53 60 L55 70 L45 70 Z" fill="url(#gold-sc)"/>
+  <rect x="40" y="70" width="20" height="6" rx="2" fill="url(#gold-sc)"/>
+  <path d="M35 34 Q 24 38 28 48 Q 32 52 38 48" fill="none" stroke="url(#gold-sc)" stroke-width="3"/>
+  <path d="M65 34 Q 76 38 72 48 Q 68 52 62 48" fill="none" stroke="url(#gold-sc)" stroke-width="3"/>
+</svg>

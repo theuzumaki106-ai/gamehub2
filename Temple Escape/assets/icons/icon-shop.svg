@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="gold-shp" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/><stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="44" fill="#2B1807" stroke="url(#gold-shp)" stroke-width="5"/>
+  <!-- Ancient treasure chest -->
+  <path d="M28 44 Q 50 30 72 44 L72 68 Q 50 72 28 68 Z" fill="url(#gold-shp)"/>
+  <line x1="28" y1="52" x2="72" y2="52" stroke="#2B1807" stroke-width="3"/>
+  <circle cx="50" cy="54" r="4" fill="#2B1807"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="gold-set" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/><stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="44" fill="#2B1807" stroke="url(#gold-set)" stroke-width="5"/>
+  <path d="M50,33 L54,33 L55,37 L59,39 L62,36 L66,39 L64,43 L66,47 L70,48 L70,52 L66,53 L64,57 L66,61 L62,64 L59,61 L55,63 L54,67 L50,67 L46,67 L45,63 L41,61 L38,64 L34,61 L36,57 L34,53 L30,52 L30,48 L34,47 L36,43 L34,39 L38,36 L41,39 L45,37 L46,33 Z" fill="url(#gold-set)"/>
+  <circle cx="50" cy="50" r="7" fill="#2B1807"/>
+</svg>

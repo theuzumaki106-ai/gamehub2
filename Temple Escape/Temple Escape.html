@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Temple Escape: Lost Idol — 3D Endless Runner</title>
+    <link rel="icon" type="image/svg+xml" href="assets/icons/icon-golden-idol.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        window.addEventListener('error', function(e) {
+            console.error('Game Error:', e.message, 'at', e.filename, ':', e.lineno);
+        });
+    </script>
+</head>
+<body>
+    <!-- 3D Three.js WebGL Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- UI Overlay Layer -->
+    <div id="ui-container">
+        <!-- In-Game HUD -->
+        <div id="hud" class="ui-interactive">
+            <div class="hud-left">
+                <div class="hud-pill">
+                    <img src="assets/icons/icon-coin.svg" alt="Coins">
+                    <span id="hud-coins">0</span>
+                </div>
+                <div class="hud-pill">
+                    <img src="assets/icons/icon-distance.svg" alt="Distance">
+                    <span id="hud-distance">0m</span>
+                </div>
+            </div>
+
+            <div class="hud-center">
+                <div class="score-display">
+                    <div class="score-label">SCORE</div>
+                    <div class="score-value" id="hud-score">0</div>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button class="icon-btn" id="btn-pause" title="Pause Game">
+                    <img src="assets/icons/icon-pause.svg" alt="Pause">
+                </button>
+            </div>
+        </div>
+
+        <!-- Active Power-Up Countdown Bar -->
+        <div id="powerup-bar-container">
+            <img id="powerup-bar-icon" src="assets/icons/icon-magnet.svg" alt="Powerup">
+            <span id="powerup-bar-label">MAGNET</span>
+            <div class="progress-track">
+                <div id="powerup-bar-fill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Mobile / On-Screen Touch Controls -->
+        <div id="touch-controls" class="ui-interactive">
+            <div class="touch-cluster">
+                <button class="touch-btn" id="touch-left" title="Move Left">&#8592;</button>
+                <button class="touch-btn" id="touch-right" title="Move Right">&#8594;</button>
+            </div>
+            <div class="touch-cluster">
+                <button class="touch-btn" id="touch-up" title="Jump">&#8593;</button>
+                <button class="touch-btn" id="touch-down" title="Slide">&#8595;</button>
+            </div>
+        </div>
+
+        <!-- 3-SECOND RESUME COUNTDOWN OVERLAY -->
+        <div id="screen-countdown" class="countdown-overlay">
+            <div id="countdown-number" class="countdown-number">3</div>
+        </div>
+
+        <!-- TITLE / MAIN MENU SCREEN -->
+        <div id="screen-title" class="screen-overlay active">
+            <div class="stone-panel ui-interactive">
+                <div class="panel-header">
+                    <img src="assets/icons/icon-golden-idol.svg" alt="Lost Idol" style="width: 72px; height: 72px; margin-bottom: 8px;">
+                    <h1 class="game-title">TEMPLE ESCAPE</h1>
+                    <div class="game-subtitle">LOST IDOL &bull; RUN FOR YOUR LIFE</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="label">BEST SCORE</div>
+                        <div class="val" id="title-best-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">TOTAL COINS</div>
+                        <div class="val" id="title-total-coins">0</div>
+                    </div>
+                </div>
+
+                <div class="btn-stack">
+                    <button class="temple-btn" id="btn-start">
+                        <img src="assets/icons/icon-play.svg" style="width: 26px; height: 26px;"> START RUN
+                    </button>
+                    <div class="btn-row">
+                        <button class="temple-btn secondary" id="btn-title-shop">
+                            <img src="assets/icons/icon-shop.svg" style="width: 22px; height: 22px;"> UPGRADES
+                        </button>
+                        <button class="temple-btn secondary" id="btn-title-guide">
+                            HOW TO PLAY
+                        </button>
+                        <button class="temple-btn secondary" id="btn-title-settings">
+                            <img src="assets/icons/icon-settings.svg" style="width: 22px; height: 22px;">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAUSE SCREEN -->
+        <div id="screen-pause" class="screen-overlay">
+            <div class="stone-panel ui-interactive">
+                <h2 class="panel-title">GAME PAUSED</h2>
+                <div class="btn-stack">
+                    <button class="temple-btn" id="btn-resume">
+                        <img src="assets/icons/icon-resume.svg" style="width: 24px; height: 24px;"> RESUME
+                    </button>
+                    <button class="temple-btn secondary" id="btn-pause-restart">
+                        <img src="assets/icons/icon-restart.svg" style="width: 24px; height: 24px;"> RESTART
+                    </button>
+                    <button class="temple-btn secondary" id="btn-pause-menu">
+                        <img src="assets/icons/icon-home.svg" style="width: 24px; height: 24px;"> MAIN MENU
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME OVER SCREEN -->
+        <div id="screen-game-over" class="screen-overlay">
+            <div class="stone-panel ui-interactive">
+                <div class="panel-header">
+                    <h2 class="panel-title" style="color: #ff5252;">GAME OVER</h2>
+                    <div class="game-subtitle">THE TEMPLE GUARDIAN PREVAILED</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box full-width">
+                        <div class="label">FINAL SCORE</div>
+                        <div class="val" id="result-score">0 <span id="new-best-badge" class="new-best-badge" style="display: none;">NEW BEST!</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">DISTANCE</div>
+                        <div class="val" id="result-distance">0 m</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">COINS</div>
+                        <div class="val" id="result-coins">0</div>
+                    </div>
+                    <div class="stat-box full-width">
+                        <div class="label">BEST SCORE</div>
+                        <div class="val" id="result-best">0</div>
+                    </div>
+                </div>
+
+                <div class="btn-stack">
+                    <button class="temple-btn" id="btn-retry">
+                        <img src="assets/icons/icon-restart.svg" style="width: 26px; height: 26px;"> PLAY AGAIN
+                    </button>
+                    <div class="btn-row">
+                        <button class="temple-btn secondary" id="btn-gameover-shop">
+                            <img src="assets/icons/icon-shop.svg" style="width: 22px; height: 22px;"> UPGRADES
+                        </button>
+                        <button class="temple-btn secondary" id="btn-gameover-menu">
+                            <img src="assets/icons/icon-home.svg" style="width: 22px; height: 22px;"> MENU
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPGRADES & SHOP SCREEN -->
+        <div id="screen-shop" class="screen-overlay">
+            <div class="stone-panel ui-interactive">
+                <div class="panel-header">
+                    <h2 class="panel-title">TEMPLE UPGRADES</h2>
+                    <div class="hud-pill" style="margin-top: 10px; display: inline-flex;">
+                        <img src="assets/icons/icon-coin.svg" alt="Coins">
+                        <span id="shop-total-coins">0</span>
+                    </div>
+                </div>
+
+                <div id="upgrades-container" class="upgrades-list"></div>
+
+                <div class="btn-row">
+                    <button class="temple-btn secondary" id="btn-close-shop">
+                        <img src="assets/icons/icon-back.svg" style="width: 22px; height: 22px;"> BACK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS SCREEN -->
+        <div id="screen-settings" class="screen-overlay">
+            <div class="stone-panel ui-interactive">
+                <div class="panel-header">
+                    <h2 class="panel-title">SETTINGS</h2>
+                </div>
+
+                <div style="margin: 16px 0;">
+                    <div class="setting-row">
+                        <span class="setting-label">Sound Effects (SFX)</span>
+                        <div class="setting-control">
+                            <input type="range" id="slider-sfx" min="0" max="100" value="80">
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">Music & Drums</span>
+                        <div class="setting-control">
+                            <input type="range" id="slider-music" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="temple-btn secondary" id="btn-close-settings">
+                        <img src="assets/icons/icon-back.svg" style="width: 22px; height: 22px;"> BACK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW TO PLAY / CONTROLS SCREEN -->
+        <div id="screen-guide" class="screen-overlay">
+            <div class="stone-panel ui-interactive">
+                <div class="panel-header">
+                    <h2 class="panel-title">HOW TO PLAY</h2>
+                    <div class="game-subtitle">SURVIVE & ESCAPE WITH THE IDOL</div>
+                </div>
+
+                <div class="guide-grid">
+                    <div class="guide-card">
+                        <h4>&#8593; / W / SPACE / SWIPE UP</h4>
+                        <p><strong>JUMP</strong> over fallen logs, chasms, and floor spikes.</p>
+                    </div>
+                    <div class="guide-card">
+                        <h4>&#8595; / S / SWIPE DOWN</h4>
+                        <p><strong>SLIDE</strong> under low stone arches and carved beams.</p>
+                    </div>
+                    <div class="guide-card">
+                        <h4>&#8592; / A / SWIPE LEFT</h4>
+                        <p><strong>TURN LEFT</strong> at corners, or change to the left lane.</p>
+                    </div>
+                    <div class="guide-card">
+                        <h4>&#8594; / D / SWIPE RIGHT</h4>
+                        <p><strong>TURN RIGHT</strong> at corners, or change to the right lane.</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15,10,5,0.7); border: 1px solid #5d4037; border-radius: 8px; padding: 10px; margin-bottom: 16px; font-size: 0.9rem; text-align: left;">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 4px;">POWER-UPS:</p>
+                    <p>&bull; <strong>MAGNET</strong>: Attracts all nearby coins automatically.</p>
+                    <p>&bull; <strong>SHIELD</strong>: Protects against 1 fatal obstacle impact.</p>
+                    <p>&bull; <strong>BOOST</strong>: Turbo dash forward with total invulnerability.</p>
+                    <p>&bull; <strong>2X MULTIPLIER</strong>: Doubles coins and distance points.</p>
+                </div>
+
+                <div class="btn-row">
+                    <button class="temple-btn secondary" id="btn-close-guide">
+                        <img src="assets/icons/icon-back.svg" style="width: 22px; height: 22px;"> BACK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="libs/three.min.js"></script>
+    <script src="src/Audio.js"></script>
+    <script src="src/StateManager.js"></script>
+    <script src="src/InputManager.js"></script>
+    <script src="src/Character.js"></script>
+    <script src="src/Pursuer.js"></script>
+    <script src="src/Obstacles.js"></script>
+    <script src="src/Collectibles.js"></script>
+    <script src="src/Particles.js"></script>
+    <script src="src/CameraController.js"></script>
+    <script src="src/Environment.js"></script>
+    <script src="src/UI.js"></script>
+    <script src="src/Game.js"></script>
+</body>
+</html>

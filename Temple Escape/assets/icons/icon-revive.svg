@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="hrt-red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF5252"/><stop offset="100%" stop-color="#D50000"/>
+    </linearGradient>
+    <linearGradient id="ankh-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/><stop offset="100%" stop-color="#F57C00"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="44" fill="#2E0808" stroke="url(#hrt-red)" stroke-width="5"/>
+  <!-- Winged Life Heart -->
+  <path d="M50 38 C 50 28, 30 24, 30 40 C 30 52, 50 68, 50 68 C 50 68, 70 52, 70 40 C 70 24, 50 28, 50 38 Z" fill="url(#hrt-red)"/>
+  <!-- Golden wings -->
+  <path d="M30 42 C 20 40, 16 32, 22 28 C 26 32, 28 36, 30 42 Z" fill="url(#ankh-gold)"/>
+  <path d="M70 42 C 80 40, 84 32, 78 28 C 74 32, 72 36, 70 42 Z" fill="url(#ankh-gold)"/>
+</svg>
